@@ -12,23 +12,20 @@ document.addEventListener('DOMContentLoaded', function() {
         themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
     });
 
-    // Load projects from localStorage or JSON
+    // Detect environment and load projects from API
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const baseUrl = isLocal ? '' : '/.netlify/functions';
+    const projectsEndpoint = isLocal ? 'projects' : 'projects-github';
+    
     loadProjects();
 
     function loadProjects() {
-        let projects = JSON.parse(localStorage.getItem('projects'));
-        if (!projects) {
-            fetch('projects.json')
-                .then(response => response.json())
-                .then(data => {
-                    projects = data;
-                    localStorage.setItem('projects', JSON.stringify(projects));
-                    displayProjects(projects);
-                })
-                .catch(error => console.error('Error loading projects:', error));
-        } else {
-            displayProjects(projects);
-        }
+        fetch(`${baseUrl}/${projectsEndpoint}`)
+            .then(response => response.json())
+            .then(projects => {
+                displayProjects(projects);
+            })
+            .catch(error => console.error('Error loading projects:', error));
     }
 
     function displayProjects(projects) {

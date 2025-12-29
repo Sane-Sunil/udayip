@@ -1,8 +1,10 @@
-require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
 const fs = require('fs');
+const path = require('path');
+const cors = require('cors');
+
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Trim quotes from env vars if present
 if (process.env.ADMIN_PASSWORD) {
@@ -12,10 +14,8 @@ if (process.env.ADMIN_PASSWORD) {
 app.use(cors());
 app.use(express.json());
 
-// Serve static files but exclude .env
-app.use(express.static('.', {
-  dotfiles: 'deny'  // This should prevent serving dotfiles like .env
-}));
+// Serve static files
+app.use(express.static('.'));
 
 // Projects endpoints
 app.get('/projects', (req, res) => {
@@ -48,7 +48,6 @@ app.post('/auth', (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

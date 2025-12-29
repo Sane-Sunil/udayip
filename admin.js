@@ -15,11 +15,16 @@
         showLoginForm();
     }
 
+    // Detect environment
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const baseUrl = isLocal ? '' : '/.netlify/functions';
+    const projectsEndpoint = isLocal ? 'projects' : 'projects-github';
+
     // Handle login
     loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const password = passwordInput.value;
-        fetch('/auth', {
+        fetch(`${baseUrl}/auth`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ password })
@@ -80,7 +85,7 @@
     const descInput = document.getElementById('description');
     const submitBtn = form.querySelector('button[type="submit"]');
 
-    fetch('/projects')
+    fetch(`${baseUrl}/${projectsEndpoint}`)
         .then(response => response.json())
         .then(data => {
             projects = data;
@@ -105,7 +110,7 @@
             currentEditIndex = -1;
             submitBtn.textContent = 'Add Project';
         }
-        fetch('/projects', {
+        fetch(`${baseUrl}/${projectsEndpoint}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(projects)
@@ -173,7 +178,7 @@
     function deleteProject(index) {
         if (confirm('Are you sure you want to delete this project?')) {
             projects.splice(index, 1);
-            fetch('/projects', {
+            fetch(`${baseUrl}/${projectsEndpoint}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(projects)
