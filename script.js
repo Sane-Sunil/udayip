@@ -1,0 +1,51 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+    themeToggle.addEventListener('click', () => {
+        const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+
+    // Load projects from localStorage or JSON
+    loadProjects();
+
+    function loadProjects() {
+        let projects = JSON.parse(localStorage.getItem('projects'));
+        if (!projects) {
+            fetch('projects.json')
+                .then(response => response.json())
+                .then(data => {
+                    projects = data;
+                    localStorage.setItem('projects', JSON.stringify(projects));
+                    displayProjects(projects);
+                })
+                .catch(error => console.error('Error loading projects:', error));
+        } else {
+            displayProjects(projects);
+        }
+    }
+
+    function displayProjects(projects) {
+        const container = document.getElementById('projects-container');
+        container.innerHTML = '';
+        const emojis = ['🚀', '💻', '🌐', '🎨', '⚡', '🔥'];
+        projects.forEach((project, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.onclick = () => window.open(project.url, '_blank');
+            const emoji = emojis[index % emojis.length];
+            card.innerHTML = `
+                <div class="emoji">${emoji}</div>
+                <h3>${project.name}</h3>
+                <p>${project.description}</p>
+            `;
+            container.appendChild(card);
+        });
+    }
+});

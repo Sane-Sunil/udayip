@@ -1,0 +1,28 @@
+{
+  "name": "udayip",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5"
+  },
+  "projects": [
+    {
+      "id": "2",
+      "name": "Project 2",
+      "url": "https://example.com/project2",
+      "description": "An interactive application built with JavaScript."
+    },
+    {
+      "id": "3",
+      "name": "Project 3",
+      "url": "https://example.com/project3",
+      "description": "A responsive website for e-commerce."
+    }
+  ]
+}

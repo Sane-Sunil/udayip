@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "name": "Gibberish",
+    "url": "https://gibberish-private-chat.netlify.app/",
+    "description": "A simple private chat app"
+  },
+  {
+    "id": "2",
+    "name": "Stego-canvas",
+    "url": "https://stego-canvas.netlify.app/",
+    "description": "Got something to hide in your image...."
+  },
+]
