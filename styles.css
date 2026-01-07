@@ -4,7 +4,7 @@
     --bg-color: #f4f4f4;
     --header-bg: #333;
     --card-bg: white;
-    --text-color: #484848;
+    --text-color: #b0b0b0;
     --text-secondary: #666;
     --shadow: rgba(0,0,0,0.1);
     --accent: #007bff;
@@ -47,7 +47,7 @@ header {
 header h1 {
     margin: 0;
     flex-grow: 1;
-    color: #989898;
+    color: #ededed;
 }
 
 .theme-toggle {

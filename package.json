@@ -9,12 +9,20 @@
     "netlify": "npx netlify dev"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2"
   },
   "devDependencies": {
     "http-server": "^14.1.1",
     "netlify-cli": "^23.13.0"
   },
-  "projects": []
+  "projects": [
+    {
+      "id": "1767767384873",
+      "name": "rehfh",
+      "url": "ff://esf.fesf",
+      "description": "ds"
+    }
+  ]
 }

@@ -1,10 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Trim quotes from env vars if present
 if (process.env.ADMIN_PASSWORD) {
