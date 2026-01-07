@@ -88,15 +88,26 @@
     fetch(`${baseUrl}/${projectsEndpoint}`)
         .then(response => response.json())
         .then(data => {
-            projects = data;
+            // Ensure projects is always an array
+            projects = Array.isArray(data) ? data : [];
             displayProjects();
         })
-        .catch(error => console.error('Error loading projects:', error));
+        .catch(error => {
+            console.error('Error loading projects:', error);
+            projects = [];
+            displayProjects();
+        });
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
+        
+        // Ensure projects is an array
+        if (!Array.isArray(projects)) {
+            projects = [];
+        }
+        
         const project = {
-            id: currentEditIndex === -1 ? Date.now().toString() : projects[currentEditIndex].id,
+            id: currentEditIndex === -1 ? Date.now().toString() : (projects[currentEditIndex]?.id || Date.now().toString()),
             name: nameInput.value,
             url: urlInput.value,
             description: descInput.value
@@ -134,6 +145,12 @@
     function displayProjects() {
         const list = document.getElementById('projects-list');
         list.innerHTML = '';
+        
+        // Ensure projects is an array
+        if (!Array.isArray(projects)) {
+            projects = [];
+        }
+        
         projects.forEach((project, index) => {
             const item = document.createElement('div');
             item.className = 'project-item';

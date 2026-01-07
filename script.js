@@ -15,22 +15,60 @@ document.addEventListener('DOMContentLoaded', function() {
     // Detect environment and load projects from API
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const baseUrl = isLocal ? '' : '/.netlify/functions';
-    const projectsEndpoint = isLocal ? 'projects' : 'projects-github';
+    const projectsEndpoint = 'projects';
     
     loadProjects();
 
     function loadProjects() {
-        fetch(`${baseUrl}/${projectsEndpoint}`)
-            .then(response => response.json())
-            .then(projects => {
+        const url = `${baseUrl}/${projectsEndpoint}?t=${Date.now()}`;
+        console.log('Fetching from:', url);
+        
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                console.log('Response status:', response.status);
+                console.log('Response OK:', response.ok);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                return response.text().then(text => {
+                    console.log('Response text:', text);
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error('Failed to parse JSON:', e);
+                        throw new Error('Invalid JSON response');
+                    }
+                });
+            })
+            .then(data => {
+                console.log('Received data:', data);
+                // Ensure projects is always an array
+                const projects = Array.isArray(data) ? data : [];
                 displayProjects(projects);
             })
-            .catch(error => console.error('Error loading projects:', error));
+            .catch(error => {
+                console.error('Error loading projects:', error);
+                displayProjects([]);
+            });
     }
 
     function displayProjects(projects) {
         const container = document.getElementById('projects-container');
         container.innerHTML = '';
+        
+        // Ensure projects is an array
+        if (!Array.isArray(projects)) {
+            projects = [];
+        }
+        
         const emojis = ['🚀', '💻', '🌐', '🎨', '⚡', '🔥'];
         projects.forEach((project, index) => {
             const card = document.createElement('div');

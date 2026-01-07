@@ -1,0 +1,13 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[environment.production]
+  NODE_VERSION = "18"
+
+[build.environment]
+  NPM_VERSION = "9"
+
+[functions]
+  [functions.environment_variables]
+    DATABASE_URL = "{{ secrets.DATABASE_URL }}"
